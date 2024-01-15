@@ -1,0 +1,42 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "node",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "paths": {
+      "/*": ["./src/*"],
+      "components/*": ["./src/components/*"],
+      "icons/*": ["./src/icons/*"],
+      "data/*": ["./src/data/*"],
+      "hooks/*": ["./src/hooks/*"],
+      "layout/*": ["./src/layout/*"],
+      "constants/*": ["./src/constants/*"],
+      "interfaces/*":["./src/interfaces/*"],
+      "services/*":["./src/services/*"],
+      "store/*": ["./src/store/*"],
+      "schemas/*": ["./src/schemas/*"],
+      "images/*": ["./public/images/*"],
+      "fonts/*": ["./public/fonts/*"],
+      "scss-components/*": ["./src/scss/components/*"]
+    },
+  },
+  
+  "include": ["src"],
+  "references": [{ "path": "./tsconfig.node.json" }]
+}
