@@ -1,14 +1,32 @@
 'use client';
 import './Products.css';
-import { AddToCartIcon, RemoveFromCartIcon } from './Icons.tsx';
 import { useCartStore } from '../../store/store';
 import { Product } from './Product';
 
-export function Products({ products }) {
+export interface ProductsAttributes {
+    id: number;
+    title: string;
+    description?: string;
+    price: number;
+    discountPercentage?: number;
+    rating?: number;
+    stock?: number;
+    brand?: string;
+    category?: string;
+    thumbnail?: string;
+    images?:string[];
+    
+}
+
+interface ProductsProps {
+  products: ProductsAttributes[];
+}
+export function Products({ products } : ProductsProps ) {
   const cart = useCartStore((state) => state.cart);
-  const checkProductInCart = (product) => {
+
+  /*const checkProductInCart = (product) => {
     return cart.some((item) => item.id === product.id);
-  };
+  };*/
 
   return (
     <main className='products px-4'>

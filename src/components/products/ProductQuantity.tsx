@@ -1,7 +1,7 @@
 'use client';
 import { useCartStore } from 'store/store';
 import { useState, useEffect } from 'react';
-import { CartIcon } from './Icons.tsx';
+import { CartIcon } from './Icons';
 
 export function ProductQuantity() {
   const [quantity, setQuantity] = useState(0);

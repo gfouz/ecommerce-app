@@ -13,9 +13,10 @@ export const updateLocalStorage = (state: CartStore) => {
     window.localStorage.setItem('cart', JSON.stringify(state));
 };
 
+
 interface Product {
-  id: string;
-  quantity: number;
+  id: number;
+  quantity?: number;
   title: string;
   price: number;
 }
@@ -33,6 +34,7 @@ interface Actions {
   addToCart: ActionMethod;
   removeFromCart: ActionMethod;
   emptyCart: (state: CartStore, action: Action) => CartStore;
+  subtractFromCart: (state: CartStore, action: Action) => CartStore;
 }
 const actions: Actions = {
   addToCart: (state: CartStore, action: Action) => {
@@ -43,7 +45,7 @@ const actions: Actions = {
       const quantity = state.cart[index].quantity;
       const cart = [
         ...state.cart.slice(0, index),
-        { ...state.cart[index], quantity: quantity + 1 },
+        { ...state.cart[index], quantity: quantity ? quantity + 1 : 0 },
         ...state.cart.slice(index + 1),
       ];
       const newState = {
@@ -65,12 +67,12 @@ const actions: Actions = {
   subtractFromCart: (state: CartStore, action: Action) => {
     const { id } = action.payload;
     const index = state.cart.findIndex((item) => item.id === id);
-
-    if (index >= 0 && state.cart[index].quantity >= 2) {
+    const quantity = state.cart[index].quantity;
+    if (index >= 0 && quantity ? quantity >= 2 : 0) {
       const quantity = state.cart[index].quantity;
       const cart = [
         ...state.cart.slice(0, index),
-        { ...state.cart[index], quantity: quantity - 1 },
+        { ...state.cart[index], quantity: quantity ? quantity - 1 : 0 },
         ...state.cart.slice(index + 1),
       ];
       const newState = {
