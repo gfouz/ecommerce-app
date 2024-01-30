@@ -1,42 +1,44 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
-    "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
-    "module": "ESNext",
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
     "skipLibCheck": true,
-
-    /* Bundler mode */
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
     "moduleResolution": "node",
-    "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx",
-
-    /* Linting */
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
     "paths": {
-      "/*": ["./src/*"],
+      "@/*": ["./src/*"],
       "components/*": ["./src/components/*"],
       "icons/*": ["./src/icons/*"],
       "data/*": ["./src/data/*"],
       "hooks/*": ["./src/hooks/*"],
       "layout/*": ["./src/layout/*"],
       "constants/*": ["./src/constants/*"],
-      "interfaces/*":["./src/interfaces/*"],
+      "lib/*":["./src/lib/*"],
+      "types/*":["./src/types/*"],
       "services/*":["./src/services/*"],
       "store/*": ["./src/store/*"],
-      "schemas/*": ["./src/schemas/*"],
-      "images/*": ["./public/images/*"],
+      "scss/*": ["./src/scss/*"],
+      "images/*": ["./public/*"],
       "fonts/*": ["./public/fonts/*"],
-      "scss-components/*": ["./src/scss/components/*"]
-    },
+      "scss-components/*": ["./src/scss/components/*"],
+      "schemas/*": ["./src/schemas/*"],
+      "logo/*": ["./src/components/logo/*"]
+    }
   },
-  
-  "include": ["src"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", ".contentlayer/generated"],
+  "exclude": ["node_modules"]
 }
