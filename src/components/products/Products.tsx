@@ -4,24 +4,23 @@ import { useCartStore } from '../../store/store';
 import { Product } from './Product';
 
 export interface ProductsAttributes {
-    id: number;
-    title: string;
-    description?: string;
-    price: number;
-    discountPercentage?: number;
-    rating?: number;
-    stock?: number;
-    brand?: string;
-    category?: string;
-    thumbnail?: string;
-    images?:string[];
-    
+  id: number;
+  title: string;
+  description?: string;
+  price: number;
+  discountPercentage?: number;
+  rating?: number;
+  stock?: number;
+  brand?: string;
+  category?: string;
+  thumbnail?: string;
+  images?: string[];
 }
 
 interface ProductsProps {
   products: ProductsAttributes[];
 }
-export function Products({ products } : ProductsProps ) {
+export function Products({ products }: ProductsProps) {
   const cart = useCartStore((state) => state.cart);
 
   /*const checkProductInCart = (product) => {

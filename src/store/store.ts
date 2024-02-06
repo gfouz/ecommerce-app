@@ -1,18 +1,18 @@
 'use client';
 
 import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
 
-export const initialState =
+/*export const initialState =
   typeof window !== 'undefined'
     ? JSON.parse(window.localStorage.getItem('cart') || '')
-    : {};
+    : {};*/
 
 // update localStorage with state for cart
 export const updateLocalStorage = (state: CartStore) => {
   typeof window !== 'undefined' &&
     window.localStorage.setItem('cart', JSON.stringify(state));
 };
-
 
 interface Product {
   id: number;
@@ -28,16 +28,32 @@ type Action = {
   type: string;
   payload: Product;
 };
-type ActionMethod = (state: CartStore, action: Action) => CartStore;
+
+interface ActionTypes {
+  ADD_TO_CART: string;
+  REMOVE_FROM_CART: string;
+  SUBTRACT_FROM_CART: string;
+  EMPTY_CART: string;
+}
+export const ACTION_TYPES: ActionTypes = {
+  ADD_TO_CART: 'ADD_TO_CART',
+  REMOVE_FROM_CART: 'REMOVE_FROM_CART',
+  SUBTRACT_FROM_CART: 'SUBTRACT_FROM_CART',
+  EMPTY_CART: 'EMPTY_CART',
+};
 
 interface Actions {
-  addToCart: ActionMethod;
-  removeFromCart: ActionMethod;
-  emptyCart: (state: CartStore, action: Action) => CartStore;
-  subtractFromCart: (state: CartStore, action: Action) => CartStore;
+  [x: string]: (
+    state: CartStore,
+    action: Action,
+  ) => {
+    cart: Product[];
+    dispatch: (action: Action) => void;
+  };
 }
+
 const actions: Actions = {
-  addToCart: (state: CartStore, action: Action) => {
+  [ACTION_TYPES.ADD_TO_CART]: (state: CartStore, action: Action) => {
     const { id } = action.payload;
     const index = state.cart.findIndex((item) => item.id === id);
 
@@ -64,7 +80,7 @@ const actions: Actions = {
     updateLocalStorage(newState);
     return newState;
   },
-  subtractFromCart: (state: CartStore, action: Action) => {
+  [ACTION_TYPES.SUBTRACT_FROM_CART]: (state: CartStore, action: Action) => {
     const { id } = action.payload;
     const index = state.cart.findIndex((item) => item.id === id);
     const quantity = state.cart[index].quantity;
@@ -92,7 +108,7 @@ const actions: Actions = {
     return newState;
   },
 
-  removeFromCart: (state: CartStore, action: Action) => {
+  [ACTION_TYPES.REMOVE_FROM_CART]: (state: CartStore, action: Action) => {
     const { id } = action.payload;
     const newState = {
       ...state,
@@ -101,7 +117,7 @@ const actions: Actions = {
     updateLocalStorage(newState);
     return newState;
   },
-  emptyCart: (state: CartStore, action: Action) => {
+  [ACTION_TYPES.EMPTY_CART]: (state: CartStore, action: Action) => {
     const newState = {
       ...state,
       cart: [],
@@ -113,16 +129,23 @@ const actions: Actions = {
 
 const reducer = (state: CartStore, action: Action) => {
   const { type } = action;
-  // @ts-ignore
+
   const currentAction = actions[type];
   return currentAction ? currentAction(state, action) : state;
 };
 
 //Redux-like patterns store
-export const useCartStore = create<CartStore>((set) => ({
-  cart: initialState.cart || [],
-  dispatch: (action: Action) => set((state) => reducer(state, action)),
-}));
+const cartState = persist<CartStore>(
+  (set) => ({
+    cart: [],
+    dispatch: (action: Action) => set((state) => reducer(state, action)),
+  }),
+  {
+    name: 'cart', // name of the item in the storage (must be unique)
+    storage: createJSONStorage(() => localStorage), // (optional) by default, 'localStorage' is used
+  },
+);
+export const useCartStore = create(cartState);
 
 /*example of how to consume the store
 

@@ -12,7 +12,7 @@ function Cart() {
         <Navbar />
       </header>
       <ul className='responsive-grid'>
-        {cart?.map((product) => <Product product={product} key={product.id}/>)}
+        {cart?.map((product) => <Product product={product} key={product.id} />)}
       </ul>
     </main>
   );
